@@ -24,7 +24,7 @@ do_add(){
 
         cd ${cur_pwd}
     else
-        repo-add ${repo_path}/$arch/${repo}.db.tar.gz $1
+        repo-add ${repo_path}/${arch}/${repo}.db.tar.gz ${pkg}
     fi
 }
 
