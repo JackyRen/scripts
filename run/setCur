@@ -1,0 +1,8 @@
+#!/bin/bash
+wp=$HOME/workspace
+dir=${wp}/.current$2
+mkdir -vp ${wp} || (echo "make dir fail..." && exit 1)
+rm -vf ${dir}
+cur=`pwd`/$1
+echo "current dir is ${cur}"
+ln -v -s -r ${cur} ${dir}
