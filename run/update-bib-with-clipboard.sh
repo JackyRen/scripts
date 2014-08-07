@@ -6,5 +6,5 @@ fi
 echo "updating ${current_bib_file}"
 xclip -o >> ${current_bib_file}
 echo >> ${current_bib_file}
-cat ${current_bib_file} |grep @| tail -1 | cut -d'{' -f 2 | cut -d',' -f 1 | xclip  -sel clip
+cat ${current_bib_file} |grep @| tail -1 | cut -d'{' -f 2 | cut -d',' -f 1 | tr -d '\r\n' | xclip  -sel clip
 

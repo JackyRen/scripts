@@ -13,15 +13,12 @@ do_add(){
     cp -v -f ${pkg}.sig ${repo_path}/$arch
     cur_pwd=$PWD
     if [ "$arch" == "any" ]; then
-        repo-add ${repo_path}/x86_64/${repo}.db.tar.gz ${pkg}
-        repo-add ${repo_path}/i686/${repo}.db.tar.gz ${pkg}
-        repo-add ${repo_path}/armv7h/${repo}.db.tar.gz ${pkg}
-        repo-add ${repo_path}/armv6h/${repo}.db.tar.gz ${pkg}
-        cd ${repo_path}/x86_64 && ln -s -v -f ../any/${pkg} .
-        cd ${repo_path}/i686 && ln -s -v -f ../any/${pkg} .
-        cd ${repo_path}/armv7h && ln -s -v -f ../any/${pkg} .
-        cd ${repo_path}/armv6h && ln -s -v -f ../any/${pkg} .
-
+        for ah in x86_64 i686 armv6h armv7h
+        do
+            repo-add ${repo_path}/${ah}/${repo}.db.tar.gz ${pkg}
+            cd ${repo_path}/${ah} && ln -s -v -f ../any/${pkg} .
+            cd ${repo_path}/${ah} && ln -s -v -f ../any/${pkg}.sig .
+        done
         cd ${cur_pwd}
     else
         repo-add ${repo_path}/${arch}/${repo}.db.tar.gz ${pkg}
@@ -39,12 +36,6 @@ do_scan() {
         done
     done
 
-#    for arch in x86_64 i686 armv6h armv7h
-#    do
-#        gpg --output ${repo_path}/${arch}/${repo}.db.tar.gz.sig --sign ${repo_path}/${arch}/${repo}.db.tar.gz
-#        gpg --output ${repo_path}/${arch}/${repo}.db.tar.gz.sig --sign ${repo_path}/${arch}/${repo}.db
-#    done
-
     cd ${repo_path} && rsync -avP --delete . repo-S:${remote_path}
 }
 do_restore(){
@@ -56,7 +47,6 @@ do_backup(){
     rsync -avP --delete ${repo_path} ${repo_bak_path}
 }
 
-##################################################################################
 if [ "$1" == "add" ]; then
 do_add $2 $3
 elif [ "$1" == "restore" ]; then
@@ -65,5 +55,4 @@ elif [ "$1" == "backup" ]; then
 do_backup
 else
 do_scan
-#echo "Usage: "$0" {login|logout}"
 fi
