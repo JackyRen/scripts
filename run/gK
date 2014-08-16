@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+# AUTHOR:   rj
+# FILE:     /media/files/projects/my-scripts/run/gk
+# CREATED:  19:50:24 22/05/2013
+# MODIFIED: 19:50:50 22/05/2013
+git add  --all :/
+git commit -m "$1"
+git push
